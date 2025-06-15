@@ -160,6 +160,26 @@ public class Principal {
 
 
     private void listarAutoresVivos() {
+
+        System.out.println("Digite o ano para verificar autores que estejam vivos: ");
+        int ano = sc.nextInt();
+        sc.nextLine();
+
+        List<DadosAutor> autores = dadosAutorRepository.findAll();
+
+        if(!autores.isEmpty()) {
+
+            System.out.println("----AUTORES VIVOS EM " + ano + "-----");
+
+            autores.stream()
+                    .filter(autor -> autor.getAnoMorte() == null || autor.getAnoMorte() >= ano )
+                    .filter(autor -> autor.getAnoNascimento() <= ano)
+                    .forEach(autor -> System.out.println("Nome: " + autor.getNome() + " (Nascido em " + autor.getAnoNascimento() + ")"));
+
+            System.out.println("--------------------------------------");
+        }else {
+            System.out.println("Nenhum autor encontrado no banco de dados! ");
+        }
     }
 
     private void listarAutoresVivosRefinado() {
