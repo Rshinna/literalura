@@ -46,4 +46,7 @@ public class LivroService {
         return autorExistente.orElseGet(() -> dadosAutorRepository.save(autor));
     }
 
+    public List<Livro> listarLivrosPorIdioma(String idioma) {
+        return livroRepository.findByIdioma(idioma);
+    }
 }

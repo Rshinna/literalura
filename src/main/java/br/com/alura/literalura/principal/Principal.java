@@ -36,9 +36,7 @@ public class Principal {
                 case 2 -> listarLivrosRegistrados();
                 case 3 -> listarAutoresRegistrados();
                 case 4 -> listarAutoresVivos();
-                case 5 -> listarAutoresVivosRefinado();
-                case 6 -> listarAutoresPorAnoDeMorte();
-                case 7 -> listarLivrosPorIdioma();
+                case 5 -> listarLivrosPorIdioma();
                 case 0 -> {
                     System.out.println("Encerrando a Literalura!");
                     executando = false;
@@ -62,9 +60,7 @@ public class Principal {
                                    2- Listar livros registrados
                                    3- Listar autores registrados
                                    4- Listar autores vivos em um determinado ano
-                                   5- Listar autores nascidos em determinado ano
-                                   6- Listar autores por ano de sua morte
-                                   7- Listar livros em um determinado idioma
+                                   5- Listar livros em um determinado idioma
                                    0- Sair
                         """);}
 
@@ -182,12 +178,23 @@ public class Principal {
         }
     }
 
-    private void listarAutoresVivosRefinado() {
-    }
-
-    private void listarAutoresPorAnoDeMorte() {
-    }
-
     private void listarLivrosPorIdioma() {
+
+        System.out.println("Digite o idioma para buscar livros (ex: 'en' para inglês, 'pt' para português): ");
+        String idioma = sc.nextLine();
+
+        List<Livro> livros = livroService.listarLivrosPorIdioma(idioma);
+
+        if (!livros.isEmpty()) {
+            System.out.println("-----LIVROS NO IDIOMA '" + idioma + "' -----");
+            livros.forEach(livro -> {
+                System.out.println("Título: " + livro.getTitulo());
+                System.out.println("Autor: " + livro.getAutor());
+                System.out.println("Número de downloads: " + livro.getNumeroDeDownloads());
+                System.out.println("------------------------------");
+            });
+        } else {
+            System.out.println("Nenhum livro encontrado no idioma informado!");
+        }
     }
 }
