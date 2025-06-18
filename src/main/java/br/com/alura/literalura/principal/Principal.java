@@ -24,9 +24,9 @@ public class Principal {
     private DadosAutorRepository dadosAutorRepository;
 
 
-    public void executar(){
+    public void executar() {
         boolean executando = true;
-        while(executando){
+        while (executando) {
             exibirMenu();
             var opcao = sc.nextInt();
             sc.nextLine();
@@ -40,30 +40,29 @@ public class Principal {
                 case 0 -> {
                     System.out.println("Encerrando a Literalura!");
                     executando = false;
-            }
+                }
                 default -> System.out.println("Opção inválida!");
+            }
         }
     }
-}
-
 
 
     private void exibirMenu() {
-    System.out.println("""
-            
-                        ###########################################################
-                                            LITERALURA
-                               Escolha um número no menu abaixo:
-                        ###########################################################
-                                             (Menu)
-                                   1- Buscar livros pelo título
-                                   2- Listar livros registrados
-                                   3- Listar autores registrados
-                                   4- Listar autores vivos em um determinado ano
-                                   5- Listar livros em um determinado idioma
-                                   0- Sair
-                        """);}
-
+        System.out.println("""
+                
+                ###########################################################
+                                    LITERALURA
+                       Escolha um número no menu abaixo:
+                ###########################################################
+                                     (Menu)
+                           1- Buscar livros pelo título
+                           2- Listar livros registrados
+                           3- Listar autores registrados
+                           4- Listar autores vivos em um determinado ano
+                           5- Listar livros em um determinado idioma
+                           0- Sair
+                """);
+    }
 
 
     private void buscarLivrosPeloTitulo() {
@@ -80,7 +79,6 @@ public class Principal {
         if (!livros.isEmpty()) {
             DadosLivro dadosLivro = livros.get(0);
 
-            // Criando e salvando o autor antes de salvar o livro
             DadosAutor autor = new DadosAutor();
             autor.setNome(dadosLivro.getAutores().get(0).getNome());
             autor.setAnoNascimento(dadosLivro.getAutores().get(0).getAnoNascimento());
@@ -88,16 +86,14 @@ public class Principal {
 
             autor = livroService.salvarAutor(autor);
 
-            // Criando e salvando o livro associado ao autor
             Livro livro = new Livro();
             livro.setTitulo(dadosLivro.getTitulo());
-            livro.setAutor(autor.getNome()); // Associa o livro ao autor salvo
+            livro.setAutor(autor.getNome());
             livro.setIdioma(dadosLivro.getIdiomas().get(0));
             livro.setNumeroDeDownloads(dadosLivro.getNumeroDownloads());
 
             livroService.salvarLivro(livro);
 
-            // Exibe os dados do livro e autor
             System.out.println("-----LIVRO-----");
             System.out.println("Titulo: " + dadosLivro.getTitulo());
             System.out.println("Autor: " + dadosLivro.getAutores().get(0).getNome());
@@ -154,29 +150,25 @@ public class Principal {
     }
 
 
-
     private void listarAutoresVivos() {
-
         System.out.println("Digite o ano para verificar autores que estejam vivos: ");
         int ano = sc.nextInt();
         sc.nextLine();
 
-        List<DadosAutor> autores = dadosAutorRepository.findAll();
+        List<DadosAutor> autores = dadosAutorRepository
+                .findByAnoNascimentoLessThanEqualAndAnoMorteGreaterThanEqualOrAnoMorteIsNull(ano, ano);
 
-        if(!autores.isEmpty()) {
-
+        if (!autores.isEmpty()) {
             System.out.println("----AUTORES VIVOS EM " + ano + "-----");
-
-            autores.stream()
-                    .filter(autor -> autor.getAnoMorte() == null || autor.getAnoMorte() >= ano )
-                    .filter(autor -> autor.getAnoNascimento() <= ano)
-                    .forEach(autor -> System.out.println("Nome: " + autor.getNome() + " (Nascido em " + autor.getAnoNascimento() + ")"));
-
+            autores.forEach(autor ->
+                    System.out.println("Nome: " + autor.getNome() + " (Nascido em " + autor.getAnoNascimento() + ")")
+            );
             System.out.println("--------------------------------------");
-        }else {
-            System.out.println("Nenhum autor encontrado no banco de dados! ");
+        } else {
+            System.out.println("Nenhum autor encontrado vivo no ano informado.");
         }
     }
+
 
     private void listarLivrosPorIdioma() {
 
