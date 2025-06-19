@@ -83,6 +83,10 @@ public class Principal {
         if (!livros.isEmpty()) {
             DadosLivro dadosLivro = livros.get(0);
 
+            if (dadosLivro.getAutores().isEmpty()){
+                System.out.println("Este livro não possui dados de autor disponíveis e não será salvo. ");
+                return;
+            }
             DadosAutor autor = new DadosAutor();
             autor.setNome(dadosLivro.getAutores().get(0).getNome());
             autor.setAnoNascimento(dadosLivro.getAutores().get(0).getAnoNascimento());
@@ -134,8 +138,8 @@ public class Principal {
             for (DadosAutor autor : autores) {
                 System.out.println("-----AUTOR-----");
                 System.out.println("Nome: " + autor.getNome());
-                System.out.println("Ano de nascimento: " + autor.getAnoNascimento());
-                System.out.println("Ano de falecimento: " + (autor.getAnoMorte() != null ? autor.getAnoMorte() : "Ainda vivo!"));
+                System.out.println("Ano de nascimento: " + (autor.getAnoNascimento() != null ? autor.getAnoNascimento() : "Ano não informado!"));
+                System.out.println("Ano de falecimento: " + (autor.getAnoMorte() != null ? autor.getAnoMorte() : "Ano não informado!"));
 
                 List<Livro> livros = livroService.listarLivrosPorAutor(autor.getNome());
 
