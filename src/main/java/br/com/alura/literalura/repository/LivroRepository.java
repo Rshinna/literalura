@@ -13,4 +13,6 @@ public interface LivroRepository extends JpaRepository<Livro, Long> {
     Optional<Livro> findByTituloAndAutor(String titulo, String autor);
 
     List<Livro> findByIdioma(String idioma);
+
+    List<Livro> findTop10ByOrderByNumeroDeDownloadsDesc();
 }

@@ -37,6 +37,7 @@ public class Principal {
                 case 3 -> listarAutoresRegistrados();
                 case 4 -> listarAutoresVivos();
                 case 5 -> listarLivrosPorIdioma();
+                case 6 -> buscarTop10MaisBaixados();
                 case 0 -> {
                     System.out.println("Encerrando a Literalura!");
                     executando = false;
@@ -45,6 +46,8 @@ public class Principal {
             }
         }
     }
+
+
 
 
     private void exibirMenu() {
@@ -60,6 +63,7 @@ public class Principal {
                            3- Listar autores registrados
                            4- Listar autores vivos em um determinado ano
                            5- Listar livros em um determinado idioma
+                           6- Buscar Top10 mais baixados
                            0- Sair
                 """);
     }
@@ -187,6 +191,26 @@ public class Principal {
             });
         } else {
             System.out.println("Nenhum livro encontrado no idioma informado!");
+        }
+    }
+
+    private void buscarTop10MaisBaixados() {
+
+        List<Livro> topLivros = livroService.buscarTop10MaisBaixados();
+
+        if (!topLivros.isEmpty()) {
+            System.out.println("----- TOP 10 LIVROS MAIS BAIXADOS -----");
+            int posicao = 1;
+            for(Livro livro : topLivros) {
+                System.out.println(posicao++ + "º lugar:");
+                System.out.println("Título: " + livro.getTitulo());
+                System.out.println("Autor: " + livro.getAutor());
+                System.out.println("Idioma: " + livro.getIdioma());
+                System.out.println("Downloads: " + livro.getNumeroDeDownloads());
+                System.out.println("------------------------------------");
+            }
+        }else {
+            System.out.println("Nenhum livro registrado ainda!");
         }
     }
 }

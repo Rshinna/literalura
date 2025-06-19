@@ -49,4 +49,8 @@ public class LivroService {
     public List<Livro> listarLivrosPorIdioma(String idioma) {
         return livroRepository.findByIdioma(idioma);
     }
+
+    public List<Livro> buscarTop10MaisBaixados() {
+        return livroRepository.findTop10ByOrderByNumeroDeDownloadsDesc();
+    }
 }
